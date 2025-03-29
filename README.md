@@ -4,6 +4,12 @@ Though Laravel Mix was originally built for Laravel projects, it of course may b
 
 ## Usage
 
+### Clone the repository
+
+```bash
+git clone https://github.com/wpdew-com/laravelmix .
+```
+
 ### 1: Install
 
 ```bash
