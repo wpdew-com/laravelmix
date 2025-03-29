@@ -1,15 +1,23 @@
 const mix = require('laravel-mix');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const fs = require('fs');
+const path = require('path');
 
 mix.setPublicPath('dist');
 
 // Компиляция JS и SCSS
 mix.js('src/js/app.js', 'js')
-    .sass('src/sass/app.scss', 'css'); // Убрали processCssUrls, он не нужен
+    .sass('src/sass/app.scss', 'css');
 
-// Копирование файлов
-mix.copy('index.html', 'dist/index.html')
-    .copyDirectory('src/images', 'dist/images')
+// Копирование всех HTML-файлов
+fs.readdirSync('src').forEach(file => {
+    if (file.endsWith('.html')) {
+        mix.copy(`src/${file}`, `dist/${file}`);
+    }
+});
+
+// Копирование остальных ресурсов
+mix.copyDirectory('src/images', 'dist/images')
     .copyDirectory('src/webfonts', 'dist/webfonts');
 
 // Очистка `dist` перед сборкой
@@ -19,13 +27,11 @@ mix.webpackConfig({
 
 // Включаем BrowserSync для автоматического обновления браузера
 mix.browserSync({
-    proxy: false,  // Отключает привязку к локальному серверу Laravel
-    server: 'dist', // Запускает встроенный сервер в папке dist
-    files: [
-        'dist/**/*.{html,js,css}' // Следит за изменениями в файлах
-    ],
-    open: true, // Автоматически открывает браузер
-    notify: false // Отключает всплывающие уведомления
+    proxy: false,  
+    server: 'dist', 
+    files: ['dist/**/*.{html,js,css}'], 
+    open: true, 
+    notify: false 
 });
 
 // Оптимизация для продакшена
