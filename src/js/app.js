@@ -2,10 +2,15 @@ import 'bootstrap';
 import 'jquery';
 import $ from 'jquery';
 import './maskedinput.js';
+import LazyLoad from './lazyload.min.js';
 import 'slick-carousel';
 
 
 $(document).ready(function () {
+	const lazyLoadInstance = new LazyLoad({
+		elements_selector: ".lazy"
+	});
+
 	$('[name="phone"]').inputmask({
 		keepStatic: false,
 		clearIncomplete: true,
